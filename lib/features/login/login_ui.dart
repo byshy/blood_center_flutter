@@ -1,4 +1,5 @@
 import 'package:blood_center_flutter/utils/loading_indicator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -90,7 +91,7 @@ class _LoginUIState extends State<LoginUI> {
           ),
           TextField(
             controller: _emailController,
-            textAlign: TextAlign.end,
+            textDirection: TextDirection.ltr,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
             onChanged: (str) {
@@ -130,7 +131,7 @@ class _LoginUIState extends State<LoginUI> {
           TextField(
             obscureText: _hidePass,
             controller: _passwordController,
-            textAlign: TextAlign.end,
+            textDirection: TextDirection.ltr,
             focusNode: _pass,
             onChanged: (str) {
               if (str.isNotEmpty) {
@@ -180,7 +181,7 @@ class _LoginUIState extends State<LoginUI> {
               child: Consumer<LoginProvider>(
                 builder: (context, login, child) {
                   if (login.logInLoading) {
-                    return LoadingIndicator();
+                    return LoadingIndicator(color: Colors.white,);
                   }
                   return child;
                 },

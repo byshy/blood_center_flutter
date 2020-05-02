@@ -3,7 +3,8 @@ import 'dart:convert';
 
 import 'package:blood_center_flutter/data/local_provider.dart';
 import 'package:blood_center_flutter/di.dart';
-import 'package:blood_center_flutter/models/history.dart';
+import 'package:blood_center_flutter/models/blood_centers_list.dart';
+import 'package:blood_center_flutter/models/history_list.dart';
 import 'package:blood_center_flutter/models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -47,6 +48,21 @@ class ApiProvider {
     }
     HistoryList historyList = HistoryList.fromJson(response.data);
     return historyList;
+  }
+
+  Future<BloodCentersList> getCenters() async {
+    var response;
+
+    try {
+      response = await client.get(
+        '${baseUrl}blood_centers/',
+      );
+    } on DioError catch (e) {
+      print('error code: ${e.response.statusCode}');
+      print('error is: ${e.response.data}');
+    }
+    BloodCentersList centersList = BloodCentersList.fromJson(response.data);
+    return centersList;
   }
 
 }
