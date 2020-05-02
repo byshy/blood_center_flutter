@@ -41,19 +41,28 @@ class _HomeUIState extends State<HomeUI> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: () {},
+            onPressed: () {
+              Provider.of<HomeProvider>(context, listen: false).logout(context);
+            },
           )
         ],
       ),
       body: ListView(
-        shrinkWrap: true,
         primary: true,
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 0, 18, 8),
+            child: Text('البيانات الشخصية', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+          ),
           UserCard(
             info: info,
           ),
           SizedBox(
             height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(18, 0, 18, 8),
+            child: Text('التأريخ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
           ),
           Consumer<HomeProvider>(
             builder: (context, instance, child) {
@@ -65,7 +74,10 @@ class _HomeUIState extends State<HomeUI> {
               }
               return child;
             },
-            child: Text('Nothing to show yet', textAlign: TextAlign.center,),
+            child: Text(
+              'Nothing to show yet',
+              textAlign: TextAlign.center,
+            ),
           )
         ],
       ),
@@ -73,24 +85,37 @@ class _HomeUIState extends State<HomeUI> {
   }
 
   Widget historyList(List<History> list) {
-    return ListView.builder(
-      shrinkWrap: true,
-      primary: false,
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        return Column(
-          children: <Widget>[
-            GenericListItem(
-              id: 'Date:',
-              value: list[index].date.toString(),
-            ),
-            GenericListItem(
-              id: 'Center:',
-              value: list[index].bloodCenterId,
-            ),
-          ],
-        );
-      },
+    return Card(
+      margin: EdgeInsets.fromLTRB(16, 0, 16, 16),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
+      clipBehavior: Clip.hardEdge,
+      elevation: 8,
+      child: ListView.separated(
+        separatorBuilder: (context, index) {
+          return Divider();
+        },
+        padding: EdgeInsets.all(8),
+        shrinkWrap: true,
+        primary: false,
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          return Column(
+            children: <Widget>[
+              GenericListItem(
+                id: 'التاريخ',
+                value: list[index].date.toString(),
+              ),
+              GenericListItem(
+                id: 'المركز',
+                value: list[index].bloodCenterId,
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 }
