@@ -3,6 +3,7 @@ import 'package:blood_center_flutter/di.dart';
 import 'package:blood_center_flutter/features/home/home_provider.dart';
 import 'package:blood_center_flutter/features/home/widgets/generic_list_item.dart';
 import 'package:blood_center_flutter/features/home/widgets/user_card.dart';
+import 'package:blood_center_flutter/features/map/map_ui.dart';
 import 'package:blood_center_flutter/models/blood_center.dart';
 import 'package:blood_center_flutter/models/history.dart';
 import 'package:blood_center_flutter/models/user_info.dart';
@@ -175,11 +176,24 @@ class _HomeUIState extends State<HomeUI> {
                       },
                       itemCount: temp.length,
                       itemBuilder: (context, index) {
-                        return Text(
-                          temp[index].name,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => CentersMap(
+                                  lat: temp[index].lat,
+                                  long: temp[index].long,
+                                ),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            temp[index].name,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
                           ),
                         );
                       },
