@@ -29,7 +29,6 @@ class ApiProvider {
     }
     final jsonData = json.decode(response.toString());
     User user = User.fromJson(jsonData);
-    print('user: ${user.toString()}');
     return user;
   }
 
@@ -46,9 +45,7 @@ class ApiProvider {
       print('error code: ${e.response.statusCode}');
       print('error is: ${e.response.data}');
     }
-    print('response: ${response.data}');
     HistoryList historyList = HistoryList.fromJson(response.data);
-    print('historyList: ${historyList.toString()}');
     return historyList;
   }
 

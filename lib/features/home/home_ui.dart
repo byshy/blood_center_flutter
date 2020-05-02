@@ -7,6 +7,7 @@ import 'package:blood_center_flutter/models/history.dart';
 import 'package:blood_center_flutter/models/user_info.dart';
 import 'package:blood_center_flutter/utils/loading_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class HomeUI extends StatefulWidget {
@@ -47,39 +48,45 @@ class _HomeUIState extends State<HomeUI> {
           )
         ],
       ),
-      body: ListView(
-        primary: true,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 0, 18, 8),
-            child: Text('البيانات الشخصية', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-          ),
-          UserCard(
-            info: info,
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(18, 0, 18, 8),
-            child: Text('التأريخ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
-          ),
-          Consumer<HomeProvider>(
-            builder: (context, instance, child) {
-              if (instance.historyLoading) {
-                return Center(child: LoadingIndicator());
-              } else if (instance.list.historyList.isNotEmpty &&
-                  !instance.historyLoading) {
-                return historyList(instance.list.historyList);
-              }
-              return child;
-            },
-            child: Text(
-              'Nothing to show yet',
-              textAlign: TextAlign.center,
+      body: RefreshIndicator(
+        onRefresh: (){
+          Provider.of<HomeProvider>(context, listen: false).getHistory();
+          return Future.delayed(Duration(seconds: 0));
+        },
+        child: ListView(
+          primary: true,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 0, 18, 8),
+              child: Text('البيانات الشخصية', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
             ),
-          )
-        ],
+            UserCard(
+              info: info,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(18, 0, 18, 8),
+              child: Text('التأريخ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),),
+            ),
+            Consumer<HomeProvider>(
+              builder: (context, instance, child) {
+                if (instance.historyLoading) {
+                  return Center(child: LoadingIndicator());
+                } else if (instance.list.historyList.isNotEmpty &&
+                    !instance.historyLoading) {
+                  return historyList(instance.list.historyList);
+                }
+                return child;
+              },
+              child: Text(
+                'Nothing to show yet',
+                textAlign: TextAlign.center,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -106,7 +113,7 @@ class _HomeUIState extends State<HomeUI> {
             children: <Widget>[
               GenericListItem(
                 id: 'التاريخ',
-                value: list[index].date.toString(),
+                value: DateFormat('E LLL d y H:mm').format(list[index].date),
               ),
               GenericListItem(
                 id: 'المركز',
