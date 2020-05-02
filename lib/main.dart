@@ -1,4 +1,5 @@
 import 'package:blood_center_flutter/data/local_provider.dart';
+import 'package:blood_center_flutter/features/home/home_provider.dart';
 import 'package:blood_center_flutter/features/home/home_ui.dart';
 import 'package:blood_center_flutter/features/login/login_provider.dart';
 import 'package:blood_center_flutter/features/login/login_ui.dart';
@@ -41,11 +42,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var firstLaunch = di.sl<LocalProvider>().getIsFirstLaunch();
-    return firstLaunch == false || firstLaunch == null
+    return firstLaunch == true || firstLaunch == null
         ? ChangeNotifierProvider(
             child: LoginUI(),
             create: (_) => LoginProvider(),
           )
-        : HomeUI();
+        : ChangeNotifierProvider(
+            child: HomeUI(),
+            create: (_) => HomeProvider(),
+          );
   }
 }

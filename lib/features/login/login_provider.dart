@@ -20,6 +20,7 @@ class LoginProvider with ChangeNotifier {
       logInLoading = false;
       _user = value;
       sl<LocalProvider>().setUser(_user);
+      sl<LocalProvider>().setIsFirstLaunch(false);
       refreshToken();
       notifyListeners();
       print('finish login');

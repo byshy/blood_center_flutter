@@ -1,34 +1,34 @@
 class UserInfo {
+    String id;
     String email;
     String firstName;
     String lastName;
-    int pk;
-    String username;
+    String mobile;
 
-    UserInfo({this.email, this.firstName, this.lastName, this.pk, this.username});
+    UserInfo({this.email, this.firstName, this.lastName, this.id, this.mobile});
 
     factory UserInfo.fromJson(Map<String, dynamic> json) {
         return UserInfo(
+            id: json['id'],
             email: json['email'],
             firstName: json['first_name'],
             lastName: json['last_name'],
-            pk: json['pk'], 
-            username: json['username'],
+            mobile: json['mobile'],
         );
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
+        data['id'] = this.id;
         data['email'] = this.email;
         data['first_name'] = this.firstName;
         data['last_name'] = this.lastName;
-        data['pk'] = this.pk;
-        data['username'] = this.username;
+        data['mobile'] = this.mobile;
         return data;
     }
 
     @override
     String toString() {
-        return '{email: $email, firstName: $firstName, lastName: $lastName, pk: $pk, username: $username}';
+        return '{id: $id, email: $email, firstName: $firstName, lastName: $lastName, mobile: $mobile}';
     }
 }

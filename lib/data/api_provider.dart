@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:blood_center_flutter/data/local_provider.dart';
+import 'package:blood_center_flutter/di.dart';
+import 'package:blood_center_flutter/models/history.dart';
 import 'package:blood_center_flutter/models/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -28,6 +31,25 @@ class ApiProvider {
     User user = User.fromJson(jsonData);
     print('user: ${user.toString()}');
     return user;
+  }
+
+  Future<HistoryList> getHistory() async {
+    var response;
+
+    String id = sl<LocalProvider>().getUser().info.id;
+
+    try {
+      response = await client.get(
+        '${baseUrl}history/$id',
+      );
+    } on DioError catch (e) {
+      print('error code: ${e.response.statusCode}');
+      print('error is: ${e.response.data}');
+    }
+    print('response: ${response.data}');
+    HistoryList historyList = HistoryList.fromJson(response.data);
+    print('historyList: ${historyList.toString()}');
+    return historyList;
   }
 
 }
